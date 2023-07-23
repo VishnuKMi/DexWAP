@@ -14,6 +14,6 @@ contract Token is ERC20 {
     }
 
     function faucet(address recipient) external {
-        _mint(recipient, 1000000000000000); //1000 tokens
+        _mint(recipient, 1000000000000000000); //10**18
     }
 }

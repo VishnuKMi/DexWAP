@@ -166,7 +166,7 @@ function DexWAP () {
   }
 
   return (
-    <div className='flex flex-col items-center justify-center h-screen'>
+    <div className='flex flex-col items-center justify-center h-screen bg-yellow-300'>
       <h1 className='text-3xl font-bold mb-4'>DexWAP</h1>
       {connected ? (
         <div>
@@ -176,12 +176,12 @@ function DexWAP () {
             <div>Your Token B balance: {userBBalance}</div>
             <div>Your Token C balance: {userCBalance}</div>
           </div>
-          <div className='my-4'>
+          <div className='my-4 text-start'>
             <p>Token A Reserve: {balanceA}</p>
             <p>Token B Reserve: {balanceB}</p>
             <p>Token C Reserve: {balanceC}</p>
           </div>
-          <div className='flex my-4 gap-2'>
+          <div className='flex justify-center my-4 gap-2'>
             <input
               type='number'
               placeholder='Amount'
@@ -204,7 +204,7 @@ function DexWAP () {
               Swap B for C
             </button>
           </div>
-          <div className='flex my-4 gap-2'>
+          <div className='flex my-4 gap-2 justify-center'>
             <button
               className='bg-green-500 text-white px-4 py-2 rounded'
               onClick={handleGetTokenA}
