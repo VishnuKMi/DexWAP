@@ -12,4 +12,8 @@ contract Token is ERC20 {
     ) ERC20(name_, symbol_) {
         _mint(recipient_, totalSupply_);
     }
+
+    function faucet(address recipient) external {
+        _mint(recipient, 1000);
+    }
 }

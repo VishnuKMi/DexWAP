@@ -106,10 +106,7 @@ function DexWAP () {
         TOKEN_ABI,
         signer
       )
-      const tx = await contractA.transfer(
-        account,
-        ethers.utils.parseUnits('1000', 18)
-      )
+      const tx = await contractA.faucet(account)
       await tx.wait()
       await fetchBalances()
       setLoading(false)
@@ -131,10 +128,7 @@ function DexWAP () {
         TOKEN_ABI,
         signer
       )
-      const tx = await contractB.transfer(
-        account,
-        ethers.utils.parseUnits('1000', 18)
-      )
+      const tx = await contractB.faucet(account)
       await tx.wait()
       await fetchBalances()
       setLoading(false)

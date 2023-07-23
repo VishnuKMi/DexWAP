@@ -1,4 +1,4 @@
-export const CONTRACT_ADDRESS = '0x9330b7546a5878860cf1574A9167038975010cd7'
+export const CONTRACT_ADDRESS = '0x7Bc3da8a061dB97aA047DD60D3798712F2C849aC'
 export const CONTRACT_ABI = [
   {
     inputs: [],
@@ -173,9 +173,9 @@ export const CONTRACT_ABI = [
   }
 ]
 
-export const CONTRACT_A_ADDRESS = '0x730f4868094064afF6C87893997f62200cF8EA1A'
-export const CONTRACT_B_ADDRESS = '0x3E652806b9564Be9815FD67f467F0318703C039E'
-export const CONTRACT_C_ADDRESS = '0xa05E40E14FFbf02af8Ab07236d5eA00D3405854F'
+export const CONTRACT_A_ADDRESS = '0x07d05493E5caB01cDe0C69B694943FE378b0888f'
+export const CONTRACT_B_ADDRESS = '0x6A75FbCF09b087a9bcCCFAeffF55AC9888605402'
+export const CONTRACT_C_ADDRESS = '0x1aA6C625a220476Bd7Eee0439947F555B7d2f917'
 export const TOKEN_ABI = [
   {
     inputs: [
@@ -354,6 +354,19 @@ export const TOKEN_ABI = [
         type: 'bool'
       }
     ],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'recipient',
+        type: 'address'
+      }
+    ],
+    name: 'faucet',
+    outputs: [],
     stateMutability: 'nonpayable',
     type: 'function'
   },
