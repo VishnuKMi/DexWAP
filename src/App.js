@@ -22,6 +22,8 @@ function DexWAP () {
   const [amount, setAmount] = useState('')
   const [loading, setLoading] = useState(false)
   const [swapError, setSwapError] = useState('')
+  const [userABalance, setUserABalance] = useState('')
+  const [userBBalance, setUserBBalance] = useState('')
 
   useEffect(() => {
     connectWallet()
@@ -56,6 +58,21 @@ function DexWAP () {
         setBalanceA(ethers.utils.formatUnits(balanceA, 18))
         setBalanceB(ethers.utils.formatUnits(balanceB, 18))
         setBalanceC(ethers.utils.formatUnits(balanceC, 18))
+
+        const tokenAContract = new ethers.Contract(
+          CONTRACT_A_ADDRESS,
+          TOKEN_ABI,
+          provider
+        )
+        const tokenBContract = new ethers.Contract(
+          CONTRACT_B_ADDRESS,
+          TOKEN_ABI,
+          provider
+        )
+        const tokenBalanceA = await tokenAContract.balanceOf(account)
+        const tokenBalanceB = await tokenBContract.balanceOf(account)
+        setUserABalance(ethers.utils.formatUnits(tokenBalanceA, 18))
+        setUserBBalance(ethers.utils.formatUnits(tokenBalanceB, 18))
       }
     } catch (error) {
       console.error('Error fetching balances:', error)
@@ -145,10 +162,16 @@ function DexWAP () {
       {connected ? (
         <div>
           <p>Connected Account: {account}</p>
+          <div>
+            <div className='flex gap-8'>
+              Your Token A balance: {userABalance}
+            </div>
+            <div>Your Token B balance: {userBBalance}</div>
+          </div>
           <div className='my-4'>
-            <p>Balance of Token A: {balanceA}</p>
-            <p>Balance of Token B: {balanceB}</p>
-            <p>Balance of Token C: {balanceC}</p>
+            <p>Token A Reserve: {balanceA}</p>
+            <p>Token B Reserve: {balanceB}</p>
+            <p>Token C Reserve: {balanceC}</p>
           </div>
           <div className='flex my-4 gap-2'>
             <input
@@ -179,14 +202,14 @@ function DexWAP () {
               onClick={handleGetTokenA}
               disabled={loading}
             >
-              Get Token A (for testing)
+              Get Token A from Faucet
             </button>
             <button
               className='bg-green-500 text-white px-4 py-2 rounded'
               onClick={handleGetTokenB}
               disabled={loading}
             >
-              Get Token B (for testing)
+              Get Token B from Faucet
             </button>
           </div>
           {swapError && <p className='text-red-500'>{swapError}</p>}
