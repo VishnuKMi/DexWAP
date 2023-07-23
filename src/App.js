@@ -4,7 +4,8 @@ import {
   CONTRACT_ADDRESS,
   CONTRACT_ABI,
   CONTRACT_A_ADDRESS,
-  CONTRACT_B_ADDRESS
+  CONTRACT_B_ADDRESS,
+  TOKEN_ABI
 } from './constants'
 
 const provider = new ethers.providers.InfuraProvider(
@@ -85,14 +86,61 @@ function DexWAP () {
         ethers.utils.parseUnits(amount, 18)
       )
       await tx.wait()
-
-      // Update the balances after a successful swap
       await fetchBalances()
-
       setLoading(false)
     } catch (error) {
       console.error('Error swapping tokens:', error)
       setSwapError('Error swapping tokens')
+      setLoading(false)
+    }
+  }
+
+  const handleGetTokenA = async () => {
+    try {
+      setLoading(true)
+      setSwapError('')
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      const contractA = new ethers.Contract(
+        CONTRACT_A_ADDRESS,
+        TOKEN_ABI,
+        signer
+      )
+      const tx = await contractA.transfer(
+        account,
+        ethers.utils.parseUnits('1000', 18)
+      )
+      await tx.wait()
+      await fetchBalances()
+      setLoading(false)
+    } catch (error) {
+      console.error('Error getting Token A:', error)
+      setSwapError('Error getting Token A')
+      setLoading(false)
+    }
+  }
+
+  const handleGetTokenB = async () => {
+    try {
+      setLoading(true)
+      setSwapError('')
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      const contractB = new ethers.Contract(
+        CONTRACT_B_ADDRESS,
+        TOKEN_ABI,
+        signer
+      )
+      const tx = await contractB.transfer(
+        account,
+        ethers.utils.parseUnits('1000', 18)
+      )
+      await tx.wait()
+      await fetchBalances()
+      setLoading(false)
+    } catch (error) {
+      console.error('Error getting Token B:', error)
+      setSwapError('Error getting Token B')
       setLoading(false)
     }
   }
@@ -108,7 +156,7 @@ function DexWAP () {
             <p>Balance of Token B: {balanceB}</p>
             <p>Balance of Token C: {balanceC}</p>
           </div>
-          <div className='flex my-4'>
+          <div className='flex my-4 gap-2'>
             <input
               type='number'
               placeholder='Amount'
@@ -117,18 +165,34 @@ function DexWAP () {
               onChange={e => setAmount(e.target.value)}
             />
             <button
-              className='bg-blue-500 text-white px-4 py-2 rounded-r'
+              className='bg-blue-500 text-white px-4 py-2 rounded-lg'
               onClick={handleSwapAforC}
               disabled={loading}
             >
               Swap A for C
             </button>
             <button
-              className='bg-blue-500 text-white px-4 py-2 rounded-r'
+              className='bg-blue-500 text-white px-4 py-2 rounded-lg'
               onClick={handleSwapBforC}
               disabled={loading}
             >
               Swap B for C
+            </button>
+          </div>
+          <div className='flex my-4 gap-2'>
+            <button
+              className='bg-green-500 text-white px-4 py-2 rounded'
+              onClick={handleGetTokenA}
+              disabled={loading}
+            >
+              Get Token A (for testing)
+            </button>
+            <button
+              className='bg-green-500 text-white px-4 py-2 rounded'
+              onClick={handleGetTokenB}
+              disabled={loading}
+            >
+              Get Token B (for testing)
             </button>
           </div>
           {swapError && <p className='text-red-500'>{swapError}</p>}
