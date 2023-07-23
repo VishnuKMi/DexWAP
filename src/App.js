@@ -5,6 +5,7 @@ import {
   CONTRACT_ABI,
   CONTRACT_A_ADDRESS,
   CONTRACT_B_ADDRESS,
+  CONTRACT_C_ADDRESS,
   TOKEN_ABI
 } from './constants'
 
@@ -24,6 +25,7 @@ function DexWAP () {
   const [swapError, setSwapError] = useState('')
   const [userABalance, setUserABalance] = useState('')
   const [userBBalance, setUserBBalance] = useState('')
+  const [userCBalance, setUserCBalance] = useState('')
 
   useEffect(() => {
     connectWallet()
@@ -69,10 +71,17 @@ function DexWAP () {
           TOKEN_ABI,
           provider
         )
+        const tokenCContract = new ethers.Contract(
+          CONTRACT_C_ADDRESS,
+          TOKEN_ABI,
+          provider
+        )
         const tokenBalanceA = await tokenAContract.balanceOf(account)
         const tokenBalanceB = await tokenBContract.balanceOf(account)
+        const tokenBalanceC = await tokenCContract.balanceOf(account)
         setUserABalance(ethers.utils.formatUnits(tokenBalanceA, 18))
         setUserBBalance(ethers.utils.formatUnits(tokenBalanceB, 18))
+        setUserCBalance(ethers.utils.formatUnits(tokenBalanceC, 18))
       }
     } catch (error) {
       console.error('Error fetching balances:', error)
@@ -161,12 +170,11 @@ function DexWAP () {
       <h1 className='text-3xl font-bold mb-4'>DexWAP</h1>
       {connected ? (
         <div>
-          <p>Connected Account: {account}</p>
-          <div>
-            <div className='flex gap-8'>
-              Your Token A balance: {userABalance}
-            </div>
+          <p className='flex justify-center'>Connected Account: {account}</p>
+          <div className='flex gap-8'>
+            <div>Your Token A balance: {userABalance}</div>
             <div>Your Token B balance: {userBBalance}</div>
+            <div>Your Token C balance: {userCBalance}</div>
           </div>
           <div className='my-4'>
             <p>Token A Reserve: {balanceA}</p>
@@ -177,7 +185,7 @@ function DexWAP () {
             <input
               type='number'
               placeholder='Amount'
-              className='border rounded-l px-4 py-2'
+              className='border-2 rounded-l px-4 py-2'
               value={amount}
               onChange={e => setAmount(e.target.value)}
             />
